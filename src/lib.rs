@@ -17,3 +17,16 @@ pub fn count(input: impl BufRead) -> HashMap<String, usize> {
   }
   freqs
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum CountOption {
+  Char,
+  Word,
+  Line,
+}
+
+impl Default for CountOption {
+  fn default() -> Self {
+      CountOption::Word
+  }
+}
