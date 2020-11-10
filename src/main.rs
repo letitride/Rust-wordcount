@@ -4,7 +4,7 @@ use std::io::{BufReader, BufRead};
 use regex::Regex;
 use std::collections::HashMap;
 
-fn count(input: impl BufRead) -> HashMap<String, usize> {
+pub fn count(input: impl BufRead) -> HashMap<String, usize> {
     //w:単語構成文字とマッチする
     let re = Regex::new(r"\w+").unwrap();
     let mut freqs = HashMap::new();
@@ -21,8 +21,6 @@ fn count(input: impl BufRead) -> HashMap<String, usize> {
 
 fn main() {
     let filename = env::args().nth(1).expect("1 argument FILENAME  require");
-    println!("{}", filename);
-
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(&file);
     let freqs = count(reader);
