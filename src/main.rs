@@ -8,6 +8,6 @@ fn main() {
     let filename = env::args().nth(1).expect("1 argument FILENAME  require");
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(&file);
-    let freqs = count(reader);
+    let freqs = count(reader, Default::default());
     println!("{:?}", freqs);
 }
