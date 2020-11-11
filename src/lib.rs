@@ -1,8 +1,19 @@
+//! wordcount はシンプルな文字、単語、行の出現頻度の計数昨日を提供します。
+//! 詳しくは[`count`](fn.count.html)関数のドキュメントを見て下さい。
+#![warn(missing_docs)]
 use regex::Regex;
 use std::collections::HashMap;
 use std::io::{BufRead};
 
-
+/// input から1行ずつUTF-8文字列を読み込み、頻度を数える
+/// 
+/// * [`CountOption::Char`](enum.CountOption.html#variant.Char): Unicode1文字ごと
+/// * [`CountOption::Word`](enum.CountOption.html#variant.Word): 正規表現 \w+ にマッチする単語ごと
+/// * [`CountOption::Line`](enum.CountOption.html#variant.Line): \n または \r\n に区切られた1行ごと
+/// 
+/// ＃Panics
+/// 
+/// 入力がUTF-8でフォーマットされていない場合にパニックする
 pub fn count(input: impl BufRead, option: CountOption) -> HashMap<String, usize> {
   //w:単語構成文字とマッチする
   let re = Regex::new(r"\w+").unwrap();
@@ -30,13 +41,18 @@ pub fn count(input: impl BufRead, option: CountOption) -> HashMap<String, usize>
   freqs
 }
 
+/// [`count`](fn.count.html)で使うオプション
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CountOption {
+  /// 1文字ごとに数える
   Char,
+  /// 単語ごと
   Word,
+  /// 行ごと
   Line,
 }
 
+/// オプションのデフォルトは[`Word`](enum.CountOption.html#variant.Word)
 impl Default for CountOption {
   fn default() -> Self {
       CountOption::Word
