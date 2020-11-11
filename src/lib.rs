@@ -70,3 +70,12 @@ fn word_count_works() {
 
   assert_eq!(count(Cursor::new("aa bb cc bb"), CountOption::Word), exp);
 }
+
+#[test]
+fn word_count_fails() {
+  use std::io::Cursor;
+  let mut exp = HashMap::new();
+  exp.insert("aa".to_string(), 1);
+  
+  assert_ne!(count(Cursor::new("aa  cc dd"), CountOption::Word), exp);
+}
