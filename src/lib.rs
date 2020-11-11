@@ -79,3 +79,30 @@ fn word_count_fails() {
   
   assert_ne!(count(Cursor::new("aa  cc dd"), CountOption::Word), exp);
 }
+
+use std::io;
+#[test]
+fn result_test() -> io::Result<()> {
+  use std::fs::{read_to_string, remove_file, write};
+
+  write("test.txt", "message")?;
+  let message = read_to_string("test.txt")?;
+  remove_file("test.txt")?;
+  assert_eq!(message, "message");
+  Ok(())
+}
+
+#[test]
+#[should_panic]
+fn word_count_do_not_contain_unknown_words() {
+  use std::io::Cursor;
+
+  count(
+    Cursor::new([
+      b'a',
+      0xf0, 0x90, 0x80,
+      0xe3, 0x81, 0x82,
+    ]),
+    CountOption::Word
+  );
+}
